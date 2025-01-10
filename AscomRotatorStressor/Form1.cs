@@ -8,6 +8,7 @@ namespace ASCOM.AscomRotatorTorture
 
         private ASCOM.DriverAccess.Rotator driver;
         private float start_position;
+        private float step_size;
         private int count_ticks;
 
         private int total_calls;
@@ -44,6 +45,7 @@ namespace ASCOM.AscomRotatorTorture
             {
                 driver = new ASCOM.DriverAccess.Rotator(Properties.Settings.Default.DriverId);
                 driver.Connected = true;
+                this.textBox2.Text = driver.StepSize.ToString();
             }
             SetUIState();
         }
@@ -77,6 +79,7 @@ namespace ASCOM.AscomRotatorTorture
                     this.listBox1.Items.Add(this.driver.Name);
 
                     this.start_position = this.driver.Position;
+                    this.step_size = this.driver.StepSize;
                     this.timer1.Interval = Int32.Parse(this.textBox1.Text);
 
                     this.listBox1.Items.Add("Started at " + DateTime.Now.ToShortTimeString() + " with Interval " + this.timer1.Interval.ToString());
@@ -127,11 +130,11 @@ namespace ASCOM.AscomRotatorTorture
                             // Move position
                             if (this.driver.Position > this.start_position)
                             {
-                                new_position = this.start_position -10;
+                                new_position = this.start_position -2;
                             }
                             else
                             {
-                                new_position = this.start_position + 10;
+                                new_position = this.start_position + 2;
                             }
                             if (new_position > 360)
                             {
@@ -158,6 +161,15 @@ namespace ASCOM.AscomRotatorTorture
                 this.listBox1.SelectedIndex = this.listBox1.Items.Count - 1;
 
                 // Move position up a little
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (this.driver.Connected)
+            {
+                float new_stepsize = float.Parse(this.textBox2.Text);
+                this.driver. = new_stepsize;
             }
         }
     }
